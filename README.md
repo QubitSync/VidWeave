@@ -1,6 +1,6 @@
-# ZigVid
+# VidWeave
 
-ZigVid is a lightweight, Zig-powered backend designed for efficient video processing. It handles tasks like transcoding, chunking videos into multiple quality levels, and saving metadata to an SQLite database. ZigVid also provides a REST API for seamless integration with other services.
+VidWeave is a lightweight, Zig-powered backend designed for efficient video processing. It handles tasks like transcoding, chunking videos into multiple quality levels, and saving metadata to an SQLite database. VidWeave also provides a REST API for seamless integration with other services.
 
 ## Features
 
@@ -19,8 +19,8 @@ ZigVid is a lightweight, Zig-powered backend designed for efficient video proces
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/zigvid.git
-   cd zigvid
+   git clone https://github.com/yourusername/VidWeave.git
+   cd VidWeave
    ```
 
 2. Install dependencies (ensure FFmpeg and SQLite are installed on your system).
