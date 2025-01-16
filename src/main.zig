@@ -1,5 +1,6 @@
 const std = @import("std");
 const zap = @import("zap");
+const db = @import("db.zig");
 
 fn failingFunc() error{Oops}!void {
     return error.Oops;
@@ -17,6 +18,9 @@ fn on_request(r: zap.Request) void {
 }
 
 pub fn main() !void {
+    const database = try db.initDatabase();
+    defer database.deinit();
+
     var listener = zap.HttpListener.init(.{
         .port = 3000,
         .on_request = on_request,

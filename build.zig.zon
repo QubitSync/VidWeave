@@ -10,6 +10,10 @@
             .url = "git+https://github.com/vrischmann/zig-sqlite#47a9c0d42ff5c083a9b04b04a5a1aeb0a777e153",
             .hash = "1220caab315c54e76dff7a60d8486c5fb4de216402d2efb6471763e2d49c194b4600",
         },
+        .libffmpeg = .{
+            .url = "git+https://github.com/allyourcodebase/ffmpeg#a679ac6f297e5b98612734c78eb3bbdca9d994b1",
+            .hash = "1220e70bd38061f2db93d6cba7c88461784a97f37bb2c8a17acbb7b1595145da9165",
+        },
     },
     .paths = .{
         "build.zig",
