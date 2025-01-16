@@ -1,7 +1,16 @@
 .{
     .name = "VidWeave",
     .version = "0.1.0",
-    .dependencies = .{},
+    .dependencies = .{
+        .zap = .{
+            .url = "git+https://github.com/zigzap/zap?ref=v0.9.1#ae5c9278335d8e1133cd6d22707323dda712e120",
+            .hash = "12200223d76ab6cd32f75bc2e31463b0b429bb5b2b6fa4ce8f68dea494ca1ec3398b",
+        },
+        .sqlite = .{
+            .url = "git+https://github.com/vrischmann/zig-sqlite#47a9c0d42ff5c083a9b04b04a5a1aeb0a777e153",
+            .hash = "1220caab315c54e76dff7a60d8486c5fb4de216402d2efb6471763e2d49c194b4600",
+        },
+    },
     .paths = .{
         "build.zig",
         "build.zig.zon",

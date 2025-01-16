@@ -26,6 +26,19 @@ pub fn build(b: *std.Build) void {
     exe.linkSystemLibrary("drm"); //TODO: investigate more on this
     exe.linkLibC();
 
+    const zap = b.dependency("zap", .{
+        .target = target,
+        .optimize = optimize,
+        .openssl = false, // set to true to enable TLS support
+    });
+    const sqlite = b.dependency("sqlite", .{
+        .target = target,
+        .optimize = optimize,
+    });
+
+    exe.root_module.addImport("zap", zap.module("zap"));
+    exe.root_module.addImport("sqlite", sqlite.module("sqlite"));
+
     b.installArtifact(exe);
 
     const run_cmd = b.addRunArtifact(exe);
