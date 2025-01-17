@@ -1,6 +1,6 @@
 # Database Table
 
-## Columns
+## Video
 
 - **uid**: Unique ID for the user table
 - **vid**: Unique ID for the video
