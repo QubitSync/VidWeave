@@ -15,9 +15,26 @@ const QueryError = error{
     QueryMustEndWithSemicolon,
 };
 
-pub fn runQuery(db: *sqlite.Db, query: []const u8) !QueryError {
-    if (query.len == 0 or query[query.len - 1] != ';') {
-        return QueryError.QueryMustEndWithSemicolon;
+pub const Database = struct {
+    const Self = @This();
+    db: *sqlite.Db,
+    query: []const u8,
+
+    pub fn init(db: *sqlite.Db, query: []const u8) Self {
+        return .{
+            .db = db,
+            .query = query,
+        };
     }
-    return try db.exec(query);
-}
+
+    pub fn exec(self: *Self) !void {
+        if (self.query.len == 0 or self.query[self.query.len - 1] != ';') {
+            return QueryError.QueryMustEndWithSemicolon;
+        }
+        try self.db.exec(self.query);
+    }
+
+    pub fn fetch(self: *Self) ![]const []const u8 {
+        return self.db.one(self.query);
+    }
+};

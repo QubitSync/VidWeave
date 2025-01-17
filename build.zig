@@ -30,7 +30,7 @@ pub fn build(b: *std.Build) void {
     const zap = b.dependency("zap", .{
         .target = target,
         .optimize = optimize,
-        .openssl = false, // set to true to enable TLS support
+        .openssl = false, //NOTE: set to true to enable TLS support
     });
     const sqlite = b.dependency("sqlite", .{
         .target = target,
