@@ -15,8 +15,6 @@ pub fn main() !void {
 
     var somePackage = api.SomePackage.init(allocator, 1);
 
-    try simpleRouter.handle_func_unbound("/", api.home);
-
     try simpleRouter.handle_func("/get", &somePackage, &api.SomePackage.get);
 
     try simpleRouter.handle_func("/dec", &somePackage, &api.SomePackage.decrement);

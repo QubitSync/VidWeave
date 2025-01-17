@@ -42,10 +42,3 @@ pub const SomePackage = struct {
 pub fn not_found(r: zap.Request) void {
     r.sendJson("{\"status\": 404, \"message\": \"Not Found\"}") catch return;
 }
-
-// NOTE: Home Page
-
-pub fn home(r: zap.Request) void {
-    const response = "<html><head><title>Welcome</title><style>body {display: flex;justify-content: center;align-items: center;height: 100vh;margin: 0;}h1 {font-family: Arial, sans-serif;}</style></head><body><h1>Hello from ZAP!!!</h1></body></html>";
-    r.sendBody(response) catch return;
-}
