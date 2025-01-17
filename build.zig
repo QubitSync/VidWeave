@@ -23,6 +23,7 @@ pub fn build(b: *std.Build) void {
     exe.linkSystemLibrary("avdevice");
     exe.linkSystemLibrary("avfilter");
     exe.linkSystemLibrary("swscale");
+    exe.linkSystemLibrary("swresample");
     exe.linkSystemLibrary("drm"); //TODO: investigate more on this
     exe.linkLibC();
 

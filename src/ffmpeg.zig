@@ -7,4 +7,7 @@ pub usingnamespace @cImport({
     @cInclude("libswresample/swresample.h");
     @cInclude("libavutil/channel_layout.h");
     @cInclude("libavutil/samplefmt.h");
+    @cInclude("libavfilter/avfilter.h");
+    @cInclude("libavfilter/buffersink.h");
+    @cInclude("libavfilter/buffersrc.h");
 });

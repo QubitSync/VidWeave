@@ -1,30 +1,40 @@
 const std = @import("std");
 const zap = @import("zap");
 const db = @import("db.zig");
+const api = @import("api.zig");
 
 fn failingFunc() error{Oops}!void {
     return error.Oops;
 }
 
-fn on_request(r: zap.Request) void {
-    if (r.path) |the_path| {
-        std.debug.print("PATH: {s}\n", .{the_path});
-    }
-
-    if (r.query) |the_query| {
-        std.debug.print("QUERY: {s}\n", .{the_query});
-    }
-    r.sendBody("<html><body><h1>Hello from ZAP!!!</h1></body></html>") catch return;
-}
-
 pub fn main() !void {
-    const database = try db.initDatabase();
-    defer database.deinit();
+    var gpa = std.heap.GeneralPurposeAllocator(.{
+        .thread_safe = true,
+    }){};
+    const allocator = gpa.allocator();
+
+    var simpleRouter = zap.Router.init(allocator, .{
+        .not_found = api.not_found,
+    });
+    defer simpleRouter.deinit();
+
+    var somePackage = api.SomePackage.init(allocator, 1, 2);
+
+    try simpleRouter.handle_func_unbound("/", api.on_request_verbose);
+
+    try simpleRouter.handle_func_unbound("/favicon.ico", api.favorite_icon);
+
+    try simpleRouter.handle_func("/geta", &somePackage, &api.SomePackage.getA);
+
+    try simpleRouter.handle_func("/getb", &somePackage, &api.SomePackage.getB);
+
+    try simpleRouter.handle_func("/inca", &somePackage, &api.SomePackage.incrementA);
 
     var listener = zap.HttpListener.init(.{
         .port = 3000,
-        .on_request = on_request,
+        .on_request = simpleRouter.on_request_handler(),
         .log = true,
+        .max_clients = 100000,
     });
     try listener.listen();
 
@@ -33,7 +43,9 @@ pub fn main() !void {
     // start worker threads
     zap.start(.{
         .threads = 2,
-        .workers = 2,
+
+        // Must be 1 if state is shared
+        .workers = 1,
     });
 }
 
