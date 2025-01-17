@@ -6,49 +6,34 @@ pub const SomePackage = struct {
     const Self = @This();
 
     allocator: Allocator,
-    a: i8,
-    b: i8,
+    a: i16,
 
-    pub fn init(allocator: Allocator, a: i8, b: i8) Self {
+    pub fn init(allocator: Allocator, a: i8) Self {
         return .{
             .allocator = allocator,
             .a = a,
-            .b = b,
         };
     }
 
-    pub fn getA(self: *Self, req: zap.Request) void {
-        std.log.warn("get_a_requested", .{});
-
+    pub fn get(self: *Self, req: zap.Request) void {
         const string = std.fmt.allocPrint(
             self.allocator,
-            "A value is {d}\n",
+            "{d}",
             .{self.a},
         ) catch return;
         defer self.allocator.free(string);
 
-        req.sendBody(string) catch return;
+        req.sendJson(string) catch return;
     }
 
-    pub fn getB(self: *Self, req: zap.Request) void {
-        std.log.warn("get_b_requested", .{});
-
-        const string = std.fmt.allocPrint(
-            self.allocator,
-            "B value is {d}\n",
-            .{self.b},
-        ) catch return;
-        defer self.allocator.free(string);
-
-        req.sendBody(string) catch return;
+    pub fn decrement(self: *Self, req: zap.Request) void {
+        self.a -= 1;
+        req.sendJson(std.fmt.allocPrint(self.allocator, "{d}", .{self.a}) catch return) catch return;
     }
 
-    pub fn incrementA(self: *Self, req: zap.Request) void {
-        std.log.warn("increment_a_requested", .{});
-
+    pub fn increment(self: *Self, req: zap.Request) void {
         self.a += 1;
-
-        req.sendBody("incremented A") catch return;
+        req.sendJson(std.fmt.allocPrint(self.allocator, "{d}", .{self.a}) catch return) catch return;
     }
 };
 

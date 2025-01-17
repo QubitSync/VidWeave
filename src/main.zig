@@ -13,15 +13,15 @@ pub fn main() !void {
     });
     defer simpleRouter.deinit();
 
-    var somePackage = api.SomePackage.init(allocator, 1, 2);
+    var somePackage = api.SomePackage.init(allocator, 1);
 
     try simpleRouter.handle_func_unbound("/", api.home);
 
-    try simpleRouter.handle_func("/geta", &somePackage, &api.SomePackage.getA);
+    try simpleRouter.handle_func("/get", &somePackage, &api.SomePackage.get);
 
-    try simpleRouter.handle_func("/getb", &somePackage, &api.SomePackage.getB);
+    try simpleRouter.handle_func("/dec", &somePackage, &api.SomePackage.decrement);
 
-    try simpleRouter.handle_func("/inca", &somePackage, &api.SomePackage.incrementA);
+    try simpleRouter.handle_func("/inc", &somePackage, &api.SomePackage.increment);
 
     var listener = zap.HttpListener.init(.{
         .port = 3000,
