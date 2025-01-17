@@ -2,17 +2,6 @@ const std = @import("std");
 const zap = @import("zap");
 const Allocator = std.mem.Allocator;
 
-pub fn on_request_verbose(r: zap.Request) void {
-    if (r.path) |the_path| {
-        std.debug.print("PATH: {s}\n", .{the_path});
-    }
-
-    if (r.query) |the_query| {
-        std.debug.print("QUERY: {s}\n", .{the_query});
-    }
-    r.sendBody("<html><body><h1>Hello from ZAP!!!</h1></body></html>") catch return;
-}
-
 pub const SomePackage = struct {
     const Self = @This();
 
@@ -63,14 +52,15 @@ pub const SomePackage = struct {
     }
 };
 
-pub fn not_found(req: zap.Request) void {
-    std.debug.print("not found handler", .{});
+// TODO: Implement Other Error pages
 
-    req.sendBody("Not found") catch return;
+pub fn not_found(r: zap.Request) void {
+    r.sendJson("{\"status\": 404, \"message\": \"Not Found\"}") catch return;
 }
 
-pub fn favorite_icon(req: zap.Request) void {
-    std.debug.print("favicon handler", .{});
+// NOTE: Home Page
 
-    req.sendBody("favicon") catch return;
+pub fn home(r: zap.Request) void {
+    const response = "<html><head><title>Welcome</title><style>body {display: flex;justify-content: center;align-items: center;height: 100vh;margin: 0;}h1 {font-family: Arial, sans-serif;}</style></head><body><h1>Hello from ZAP!!!</h1></body></html>";
+    r.sendBody(response) catch return;
 }

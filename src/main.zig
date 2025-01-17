@@ -1,11 +1,6 @@
 const std = @import("std");
 const zap = @import("zap");
-const db = @import("db.zig");
 const api = @import("api.zig");
-
-fn failingFunc() error{Oops}!void {
-    return error.Oops;
-}
 
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{
@@ -20,9 +15,7 @@ pub fn main() !void {
 
     var somePackage = api.SomePackage.init(allocator, 1, 2);
 
-    try simpleRouter.handle_func_unbound("/", api.on_request_verbose);
-
-    try simpleRouter.handle_func_unbound("/favicon.ico", api.favorite_icon);
+    try simpleRouter.handle_func_unbound("/", api.home);
 
     try simpleRouter.handle_func("/geta", &somePackage, &api.SomePackage.getA);
 
@@ -37,22 +30,10 @@ pub fn main() !void {
         .max_clients = 100000,
     });
     try listener.listen();
-
     std.debug.print("Listening on 0.0.0.0:3000\n", .{});
-
-    // start worker threads
     zap.start(.{
         .threads = 2,
-
         // Must be 1 if state is shared
         .workers = 1,
     });
-}
-
-test "returning an error" {
-    failingFunc() catch |err| {
-        try std.testing.expect(err == error.Oops);
-        std.debug.print("return from catched error: {}", .{err});
-        return;
-    };
 }
