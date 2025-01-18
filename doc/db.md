@@ -1,16 +1,37 @@
-## Table: `Video`
+## Table: `User`
+| Column Name        | Data Type        | Constraints                 | Description                                   |
+|--------------------|------------------|-----------------------------|-----------------------------------------------|
+| **id**             | `UID`            | `PRIMARY KEY`               | Unique identifier for user                    |
+| **username**       | `VARCHAR(30)`    | `UNIQUE KEY`                | Unique username for user                      |
+| **password**       | `VARCHAR(40)`    | `NOT NULL`                  | Password of user account                      |
+| **profile_img**    | `TEXT`           |                             | Profile image of user account                 |
+| **cover_img**      | `TEXT`           |                             | Cover image of user account                   |
+| **mail**           | `VARCHAR(50)`    | `UNIQUE KEY`                | Mail of user                                  |
+| **created_at**     | `DATETIME`       | `DEFAULT CURRENT_TIMESTAMP` | Timestamp when the video was created.         |
+| **updated_at**     | `DATETIME`       | `DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP` | Timestamp when the video was last updated. |
+
+
+## Table: `Video Description`
 
 | Column Name       | Data Type         | Constraints                 | Description                                   |
-|--------------------|-------------------|-----------------------------|-----------------------------------------------|
-| **id**            | `BIGINT`          | `PRIMARY KEY`, `AUTO_INCREMENT` | Unique identifier for the video entry.       |
+|-------------------|-------------------|-----------------------------|-----------------------------------------------|
+| **id**            | `UID`             | `PRIMARY KEY`               | Unique identifier for the video entry.       |
 | **uid**           | `BIGINT`          | `NOT NULL`, `FOREIGN KEY` (to `User.id`) | References the user who owns the video.      |
-| **vid**           | `VARCHAR(36)`     | `NOT NULL`, `UNIQUE`        | Unique UUID for the video.                   |
+| **vid**           | `VARCHAR(36)`     | `NOT NULL`, `FOREIGN KEY` (to `Video.id`) | Unique UUID for the video.                   |
 | **name**          | `VARCHAR(255)`    | `NOT NULL`                  | Name of the video.                           |
 | **description**   | `TEXT`            |                              | Detailed description of the video.           |
 | **thumbnail_path**| `VARCHAR(255)`    |                              | Path to the thumbnail image.                 |
-| **video_parts**   | `JSON`            | `NOT NULL`                  | JSON object storing video parts by quality and segments. |
 | **created_at**    | `DATETIME`        | `DEFAULT CURRENT_TIMESTAMP` | Timestamp when the video was created.        |
 | **updated_at**    | `DATETIME`        | `DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP` | Timestamp when the video was last updated. |
+
+## Table: `Video`
+
+| Column Name   | Data Type     | Constraints                 | Description                              |
+|---------------|---------------|-----------------------------|------------------------------------------|
+| **id**        | `UID`         | `PRIMARY KEY`               | Unique identifier for the video part.    |
+| **quality**   | `TEXT`        | `NOT NULL`                  | Video quality (e.g., `320p`, `720p`).    |
+| **segment**   | `INTEGER`     | `NOT NULL`                  | Segment number (e.g., `1`, `2`).         |
+| **path**      | `TEXT`        | `NOT NULL`                  | Path to the video segment file.          |
 
 ---
 
