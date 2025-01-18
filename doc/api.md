@@ -1,10 +1,42 @@
-## Api 
+## API Documentation
+
+### Get All Videos
+
+**Endpoint**: `/api/videos?first={int}&last={int}`  
+**Method**: `GET`  
+**Description**: Retrieves a list of videos within the specified range.
+
+**Request Parameters**:  
+- `first` (int): Index of the first video to retrieve.  
+- `last` (int): Index of the last video to retrieve.  
+
+**Response**:
+```json
+[
+  {
+    "uid": "string",
+    "vid": "string",
+    "name": "string",
+    "description": "string",
+    "thumbname": "string"
+  },
+  {
+    "uid": "string",
+    "vid": "string",
+    "name": "string",
+    "description": "string",
+    "thumbname": "string"
+  }
+]
+```
+
+---
 
 ### Upload Video
 
-**Endpoint**: `/api/upload`
-
-**Method**: `POST`
+**Endpoint**: `/api/upload`  
+**Method**: `POST`  
+**Description**: Uploads a new video.
 
 **Request Body**:
 ```json
@@ -13,7 +45,8 @@
   "description": "string",
   "quality": "string",
   "thumbname": "string",
-  "video": "video"
+  "video": "string (file path or base64 encoded video)"
+}
 ```
 
 **Response**:
@@ -27,11 +60,16 @@
 }
 ```
 
+---
+
 ### Fetch Video
 
-**Endpoint**: `/api/video/{vid}`
+**Endpoint**: `/api/video?vid={vid}`  
+**Method**: `GET`  
+**Description**: Retrieves details of a specific video.
 
-**Method**: `GET`
+**Request Parameters**:  
+- `vid` (string): Unique ID of the video to fetch.
 
 **Response**:
 ```json
@@ -41,19 +79,24 @@
     "uid": "string",
     "name": "string",
     "description": "string",
-    "quality": "json",
+    "quality": "string",
     "thumbname": "/path/to/image/file",
-    "created_date": "string",
-    "updated_date": "string"
+    "created_date": "string (ISO 8601 format)",
+    "updated_date": "string (ISO 8601 format)"
   }
 }
 ```
 
+---
+
 ### Delete Video
 
-**Endpoint**: `/api/video/{vid}`
+**Endpoint**: `/api/video/{vid}`  
+**Method**: `DELETE`  
+**Description**: Deletes a video by its unique ID.
 
-**Method**: `DELETE`
+**Request Parameters**:  
+- `vid` (string): Unique ID of the video to delete.
 
 **Response**:
 ```json
@@ -63,11 +106,16 @@
 }
 ```
 
+---
+
 ### Update Video
 
-**Endpoint**: `/api/video/{vid}`
+**Endpoint**: `/api/video/{vid}`  
+**Method**: `PUT`  
+**Description**: Updates the details of a specific video.
 
-**Method**: `PUT`
+**Request Parameters**:  
+- `vid` (string): Unique ID of the video to update.
 
 **Request Body**:
 ```json
@@ -76,7 +124,7 @@
   "description": "string",
   "quality": "string",
   "thumbname": "string",
-  "video": "string"
+  "video": "string (file path or base64 encoded video)"
 }
 ```
 
@@ -88,18 +136,23 @@
 }
 ```
 
-### Player 
+---
 
-**Endpoints**: `/api/player`
+### Video Player Configuration
 
-**Method**: `GET`
+**Endpoint**: `/api/player?vid={vid}`  
+**Method**: `GET`  
+**Description**: Retrieves player configuration for streaming a specific video.
 
-**Request Body**:
+**Request Parameters**:  
+- `vid` (string): Unique ID of the video for which to fetch the player configuration.
+
+**Response**:
 ```json
 {
   "playerConfig": {
-    "bufferSize": "10MB",
-    "syncInterval": "5s",
+    "bufferSize": "string (e.g., '10MB')",
+    "syncInterval": "string (e.g., '5s')",
     "video": {
       "320p": {
         "1": "path/to/320p/video1",
@@ -118,3 +171,10 @@
   }
 }
 ```
+
+---
+
+### Notes
+- Ensure the `vid` parameter is URL-encoded when making requests.
+- For the `video` field in the upload and update endpoints, specify whether the API expects a file path, a base64 string, or a multipart form-data file. Update the documentation accordingly if clarification is needed.
+- Add details about authentication or authorization requirements if applicable.
