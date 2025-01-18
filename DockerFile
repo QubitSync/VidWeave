@@ -1,8 +1,10 @@
-FROM vhyran/zig-alpine
+FROM alpine:latest
 
 WORKDIR /app
 
 COPY . /app
+
+RUN apk add --no-cache ffmpeg zig
 
 RUN zig build
 
