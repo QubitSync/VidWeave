@@ -8,12 +8,6 @@ The server-side player is responsible for handling video playback on the server.
 - Buffer management
 - Synchronization with clients
 
-### API Endpoints
-
-- `GET /api/player/start` - Start video playback
-- `POST /api/player/pause` - Pause video playback
-- `POST /api/player/stop` - Stop video playback
-
 ### Configuration
 
 To configure the server-side player, update the `playerConfig` object in the server configuration file:
@@ -22,13 +16,22 @@ To configure the server-side player, update the `playerConfig` object in the ser
 {
   "playerConfig": {
     "bufferSize": "10MB",
-    "syncInterval": "5s"
+    "syncInterval": "5s",
+    "video": {
+      "320p": {
+        "1": "path/to/320p/video1",
+        "2": "path/to/320p/video2"
+      },
+      "720p": {
+        "1": "path/to/720p/video1",
+        "2": "path/to/720p/video2"
+      },
+      "1080p": {
+        "1": "path/to/1080p/video1",
+        "2": "path/to/1080p/video2"
+      }
+    },
+    "audio": "/path/to/audio/file"
   }
 }
-```
-
-### Example Usage
-
-```bash
-curl -X GET http://localhost:3000/api/player/start
 ```
