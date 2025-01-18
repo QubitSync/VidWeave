@@ -39,58 +39,53 @@ zig build run
 
 ## API Endpoints
 
-### 1. **Process Video**
-- **Endpoint**: `POST /api/process`
-- **Description**: Processes a video, chunks it into different quality levels, and stores metadata in the SQLite database.
-- **Request Body**:
-  ```json
-  {
-    "file_path": "path/to/video.mp4",
-    "qualities": [240, 480, 720]
-  }
-  ```
-- **Response**:
-  ```json
-  {
-    "status": "success",
-    "video_id": "12345",
-    "message": "Video processed successfully."
-  }
-  ```
+The provided API and database schema define a clear workflow for uploading, managing, and streaming videos. Below is a summary and clarification for ease of understanding:
 
-### 2. **Get Video Metadata**
-- **Endpoint**: `GET /api/videos/:video_id`
-- **Description**: Fetch metadata for a processed video.
-- **Response**:
-  ```json
-  {
-    "video_id": "12345",
-    "original_path": "path/to/video.mp4",
-    "qualities": [240, 480, 720],
-    "chunks": [
-      "path/to/video_240p.mp4",
-      "path/to/video_480p.mp4",
-      "path/to/video_720p.mp4"
-    ]
-  }
-  ```
+### **API Overview**
 
-### 3. **List All Videos**
-- **Endpoint**: `GET /api/videos`
-- **Description**: Fetch a list of all processed videos.
-- **Response**:
-  ```json
-  [
-    {
-      "video_id": "12345",
-      "original_path": "path/to/video.mp4"
-    },
-    {
-      "video_id": "67890",
-      "original_path": "path/to/another_video.mp4"
-    }
-  ]
-  ```
+#### **Upload Video**
+- **Endpoint**: `/api/upload`
+- **Method**: `POST`
+- **Purpose**: Allows uploading a video with metadata like name, description, quality, and a thumbnail.
+- **Required Fields**: `name`, `description`, `quality`, `thumbname`, `video`.
+
+#### **Fetch Video**
+- **Endpoint**: `/api/video/{vid}`
+- **Method**: `GET`
+- **Purpose**: Retrieves video details using the video ID.
+- **Response Data**:
+  - Metadata (`name`, `description`, `quality`, etc.).
+  - Video paths.
+
+#### **Delete Video**
+- **Endpoint**: `/api/video/{vid}`
+- **Method**: `DELETE`
+- **Purpose**: Deletes a specific video by its ID.
+- **Response**: Success message.
+
+#### **Update Video**
+- **Endpoint**: `/api/video/{vid}`
+- **Method**: `PUT`
+- **Purpose**: Updates metadata and video files for a specific video.
+- **Request Fields**: Similar to the upload endpoint.
+
+#### **Player Configuration**
+- **Endpoint**: `/api/player`
+- **Method**: `GET`
+- **Purpose**: Fetches player configuration settings, including video and audio files at different resolutions.
+
+### **Database Schema**
+
+The `Video` table structure supports the following:
+- Unique identifiers for users (`uid`) and videos (`vid`).
+- Fields for metadata (`name`, `description`, `quality`).
+- JSON structure for video paths, e.g., `{ "720p:1": "/path/to/part1", ... }`.
+- Timestamps for creation and updates.
+
+### **Player Features**
+- Streams videos and handles buffering.
+- Synchronizes playback with client-side players.
+- Configuration is stored in a JSON-like structure.
 
 ## Project Structure
 
@@ -103,6 +98,12 @@ zig build run
 ├── build.zig            # Build script
 ├── README.md            # Project documentation
 ```
+
+### Notes for Implementation
+1. **Video Splitting**: The server should handle segmenting videos into parts for efficient streaming (e.g., `320p:1`, `720p:1`).
+2. **Buffer Management**: Ensure the buffer size and synchronization intervals in `playerConfig` match the expected client performance.
+3. **Security**: Protect endpoints, especially upload and delete, with authentication/authorization.
+4. **Error Handling**: Define error responses for cases like invalid video IDs, incomplete uploads, or configuration mismatches.
 
 ## Contributing
 
