@@ -1,4 +1,32 @@
 ## API Documentation
+### Get All Videos
+
+**Endpoint**: `/api/videos?s={string}`  
+**Method**: `GET`  
+**Description**: Retrieves a list of videos within the specified range.
+
+**Request Parameters**:  
+- `s` (string): Search query to filter the list of videos by name or description.    
+
+**Response**:
+```json
+[
+  {
+    "uid": "string",
+    "vid": "string",
+    "name": "string",
+    "description": "string",
+    "thumbname": "string"
+  },
+  {
+    "uid": "string",
+    "vid": "string",
+    "name": "string",
+    "description": "string",
+    "thumbname": "string"
+  }
+]
+```
 
 ### Get All Videos
 
@@ -167,11 +195,124 @@
         "2": "path/to/1080p/video2"
       }
     },
-    "audio": "/path/to/audio/file"
   }
 }
 ```
 
+### User Management
+
+**Endpoint**: `/api/users`  
+**Method**: `GET`  
+**Description**: Retrieves a list of all users.
+
+**Response**:
+```json
+[
+  {
+    "uid": "string",
+    "username": "string",
+    "email": "string",
+    "created_date": "string (ISO 8601 format)"
+  },
+  {
+    "uid": "string",
+    "username": "string",
+    "email": "string",
+    "created_date": "string (ISO 8601 format)"
+  }
+]
+```
+
+### Get User Details
+
+**Endpoint**: `/api/users/{uid}`  
+**Method**: `GET`  
+**Description**: Retrieves details of a specific user.
+
+**Request Parameters**:  
+- `uid` (string): Unique ID of the user to fetch.
+
+**Response**:
+```json
+{
+  "success": true,
+  "data": {
+    "uid": "string",
+    "username": "string",
+    "email": "string",
+    "created_date": "string (ISO 8601 format)"
+  }
+}
+```
+
+### Create User
+
+**Endpoint**: `/api/users`  
+**Method**: `POST`  
+**Description**: Creates a new user.
+
+**Request Body**:
+```json
+{
+  "username": "string",
+  "email": "string",
+  "password": "string"
+}
+```
+
+**Response**:
+```json
+{
+  "success": true,
+  "message": "User created successfully",
+  "data": {
+    "uid": "string"
+  }
+}
+```
+
+### Update User
+
+**Endpoint**: `/api/users/{uid}`  
+**Method**: `PUT`  
+**Description**: Updates the details of a specific user.
+
+**Request Parameters**:  
+- `uid` (string): Unique ID of the user to update.
+
+**Request Body**:
+```json
+{
+  "username": "string",
+  "email": "string",
+  "password": "string"
+}
+```
+
+**Response**:
+```json
+{
+  "success": true,
+  "message": "User updated successfully"
+}
+```
+
+### Delete User
+
+**Endpoint**: `/api/users/{uid}`  
+**Method**: `DELETE`  
+**Description**: Deletes a user by their unique ID.
+
+**Request Parameters**:  
+- `uid` (string): Unique ID of the user to delete.
+
+**Response**:
+```json
+{
+  "success": true,
+  "message": "User deleted successfully"
+}
+```
 ---
 
 ### Notes

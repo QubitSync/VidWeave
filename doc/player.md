@@ -31,7 +31,6 @@ To configure the server-side player, update the `playerConfig` object in the ser
         "2": "path/to/1080p/video2"
       }
     },
-    "audio": "/path/to/audio/file"
   }
 }
 ```
